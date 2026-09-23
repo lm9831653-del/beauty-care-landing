@@ -1,13 +1,16 @@
 BEAUTY CARE · LANDING PAGE
 
-La landing se despliega en Vercel. El sistema de pedidos verificados requiere Supabase y Resend. Lee OPERACION-VERIFICADA.md para configurarlo.
+Abre index.html en tu navegador para ver la página.
 
-Incluye:
+La landing es estática y funciona sin instalar nada. Incluye:
 - Diseño responsive para celular, tablet y computador.
-- Galería del producto y carrusel táctil.
-- Ficha técnica, preguntas frecuentes y accesorios.
-- Pedidos por WhatsApp con una referencia de seguimiento.
-- Registro central de pedidos y ventas entregadas.
-- Reseñas vinculadas a pedidos entregados e invitaciones al correo del comprador.
+- Galería con las 5 imágenes nuevas y las 3 imágenes originales del producto dentro de la carpeta assets.
+- Carrusel responsive con flechas, indicadores y desplazamiento táctil.
+- Ficha técnica, preguntas frecuentes y sección de reseñas.
+- Galería visual de los 5 accesorios.
+- Formulario de solicitud que abre WhatsApp con los datos del pedido listos para enviar.
+- Reseñas guardadas en el almacenamiento del navegador.
 
-No se precargan opiniones ni ventas inventadas. El contador empieza con las entregas registradas en la base de datos.
+Nota:
+Las reseñas se guardan en el navegador donde se publican; no se sincronizan entre
+dispositivos. El formulario de pedido abre WhatsApp en el número configurado.

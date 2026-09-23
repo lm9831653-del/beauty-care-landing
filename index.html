@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#f05c98">
   <meta name="description" content="Masajeador Facial 5 en 1 Beauty Care. Limpia, exfolia y masajea tu piel desde casa.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -219,9 +218,6 @@
     .review-item .stars-display { font-size: .78rem; letter-spacing: 1px; }
     .review-item p { margin: 0; color: var(--muted); font-size: .82rem; }
     .empty-reviews { padding: 15px 16px; border: 1px dashed #e7d9e2; border-radius: 14px; color: var(--muted); font-size: .8rem; }
-    .privacy-consent { display: flex; grid-template-columns: none; align-items: flex-start; gap: 9px; color: var(--muted); font-size: .74rem; }
-    .privacy-consent input { width: auto; min-height: 0; margin-top: 4px; accent-color: var(--pink); }
-    .privacy-consent label { font-weight: 500; }
 
     .accessories { background: #fff; }
     .accessory-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
@@ -574,7 +570,7 @@
               </div>
               <div class="form-row">
                 <div class="field"><label for="phone">Número de teléfono</label><input id="phone" name="phone" type="tel" placeholder="300 000 0000" autocomplete="tel" required></div>
-                <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required></div>
+                <div class="field"><label for="email">Correo electrónico <span class="optional">(opcional)</span></label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email"></div>
               </div>
               <div class="form-row">
                 <div class="field"><label for="department">Departamento</label><select id="department" name="department" autocomplete="address-level1" required>
@@ -592,7 +588,6 @@
               </div>
               <div class="field"><label for="address">Dirección y complementos</label><input id="address" name="address" type="text" placeholder="Calle, carrera, número, barrio y referencias" autocomplete="street-address" required></div>
               <div class="field"><label for="notes">Notas para el proveedor <span class="optional">(opcional)</span></label><textarea id="notes" name="notes" rows="3" placeholder="Indicaciones para la entrega"></textarea></div>
-              <div class="privacy-consent"><input id="privacy-consent" name="privacy-consent" type="checkbox" required><label for="privacy-consent">Autorizo a Beauty Care a usar mi nombre y correo para gestionar este pedido. <a href="/privacidad.html" target="_blank" rel="noopener">Lee el aviso de privacidad.</a></label></div>
               <button class="btn-primary submit" type="submit">Quiero pedirlo <span aria-hidden="true">→</span></button>
               <p class="form-foot">Pago contra entrega disponible · Te contactaremos para confirmar disponibilidad y envío.</p>
             </form>
@@ -821,34 +816,17 @@
 
     renderReviews();
 
-    document.getElementById("order-form").addEventListener("submit", async function (event) {
+    document.getElementById("order-form").addEventListener("submit", function (event) {
       event.preventDefault();
       if (!this.checkValidity()) { this.reportValidity(); return; }
       const customerFirstName = document.getElementById("first-name").value.trim();
       const customerLastName = document.getElementById("last-name").value.trim();
       const customerPhone = document.getElementById("phone").value.trim();
-      const customerEmail = document.getElementById("email").value.trim();
+      const customerEmail = document.getElementById("email").value.trim() || "No registrado";
       const customerDepartment = document.getElementById("department").value;
       const customerCity = document.getElementById("city").value.trim();
       const customerAddress = document.getElementById("address").value.trim();
       const customerNotes = document.getElementById("notes").value.trim() || "Sin notas";
-      const submitButton = this.querySelector("button[type=submit]");
-      submitButton.disabled = true;
-      const whatsappTab = window.open("about:blank", "_blank");
-      if (whatsappTab) whatsappTab.opener = null;
-      let orderId = "Pendiente de guardar";
-      try {
-        const saveResponse = await fetch("/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ firstName: customerFirstName, lastName: customerLastName, email: customerEmail, privacyConsent: document.getElementById("privacy-consent").checked })
-        });
-        const savedOrder = await saveResponse.json();
-        if (!saveResponse.ok) throw new Error(savedOrder.error || "No pudimos guardar el pedido.");
-        orderId = savedOrder.orderId;
-      } catch (error) {
-        window.alert(error.message + " Puedes seguir con WhatsApp; te contactaremos allí.");
-      }
       const message = [
         "Hola, quiero pedir el Masajeador Facial Beauty Care 5 en 1.",
         "",
@@ -861,13 +839,10 @@
         "Dirección: " + customerAddress,
         "Notas: " + customerNotes,
         "Forma de pago: Contra entrega",
-        "Precio: $30.000",
-        "Referencia de pedido: " + orderId
+        "Precio: $30.000"
       ].join("\n");
       const whatsappUrl = "https://wa.me/573132049102?text=" + encodeURIComponent(message);
-      if (whatsappTab && !whatsappTab.closed) whatsappTab.location.href = whatsappUrl;
-      else window.location.href = whatsappUrl;
-      submitButton.disabled = false;
+      window.open(whatsappUrl, "_blank", "noopener");
       document.getElementById("order-card").classList.add("submitted");
       document.getElementById("order-card").scrollIntoView({ behavior: "smooth", block: "center" });
     });
