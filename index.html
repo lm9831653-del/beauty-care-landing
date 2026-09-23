@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#f05c98">
   <meta name="description" content="Masajeador Facial 5 en 1 Beauty Care. Limpia, exfolia y masajea tu piel desde casa.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -211,13 +212,18 @@
     textarea { width: 100%; min-height: 102px; resize: vertical; padding: 12px 13px; border: 1px solid #e5dfe4; border-radius: 10px; outline: none; color: var(--ink); background: #fff; font: inherit; font-size: .87rem; }
     textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(233,78,145,.1); }
     .review-list { display: grid; gap: 12px; margin-top: 18px; }
+    .review-form[hidden] { display: none; }
     .review-item { display: grid; gap: 5px; padding: 15px 16px; border-radius: 14px; background: var(--pink-soft); }
     .review-item-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
     .review-item strong { font-size: .82rem; }
     .review-item time { color: var(--muted); font-size: .68rem; }
     .review-item .stars-display { font-size: .78rem; letter-spacing: 1px; }
     .review-item p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .review-verified { color: var(--green); font-size: .7rem; font-weight: 800; }
     .empty-reviews { padding: 15px 16px; border: 1px dashed #e7d9e2; border-radius: 14px; color: var(--muted); font-size: .8rem; }
+    .privacy-consent { display: flex; grid-template-columns: none; align-items: flex-start; gap: 9px; color: var(--muted); font-size: .74rem; }
+    .privacy-consent input { width: auto; min-height: 0; margin-top: 4px; accent-color: var(--pink); }
+    .privacy-consent label { font-weight: 500; }
 
     .accessories { background: #fff; }
     .accessory-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
@@ -570,7 +576,7 @@
               </div>
               <div class="form-row">
                 <div class="field"><label for="phone">Número de teléfono</label><input id="phone" name="phone" type="tel" placeholder="300 000 0000" autocomplete="tel" required></div>
-                <div class="field"><label for="email">Correo electrónico <span class="optional">(opcional)</span></label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email"></div>
+                <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required></div>
               </div>
               <div class="form-row">
                 <div class="field"><label for="department">Departamento</label><select id="department" name="department" autocomplete="address-level1" required>
@@ -588,6 +594,7 @@
               </div>
               <div class="field"><label for="address">Dirección y complementos</label><input id="address" name="address" type="text" placeholder="Calle, carrera, número, barrio y referencias" autocomplete="street-address" required></div>
               <div class="field"><label for="notes">Notas para el proveedor <span class="optional">(opcional)</span></label><textarea id="notes" name="notes" rows="3" placeholder="Indicaciones para la entrega"></textarea></div>
+              <div class="privacy-consent"><input id="privacy-consent" name="privacy-consent" type="checkbox" required><label for="privacy-consent">Autorizo a Beauty Care a usar mi nombre y correo para gestionar este pedido y enviarme una invitación personal para opinar si recibo el producto. <a href="/privacidad.html" target="_blank" rel="noopener">Lee el aviso de privacidad.</a></label></div>
               <button class="btn-primary submit" type="submit">Quiero pedirlo <span aria-hidden="true">→</span></button>
               <p class="form-foot">Pago contra entrega disponible · Te contactaremos para confirmar disponibilidad y envío.</p>
             </form>
@@ -602,16 +609,17 @@
         <div class="reviews-intro">
           <span class="eyebrow">Opiniones reales</span>
           <h2>Tu experiencia también cuenta.</h2>
-          <p>Después de probarlo, comparte qué te pareció el masajeador y ayuda a otras personas a elegir con confianza.</p>
+          <p>Las opiniones y el contador se mostrarán cuando estén vinculados a pedidos y compradores verificados.</p>
           <div class="rating-summary" id="rating-summary">
             <span class="rating-number" id="rating-number">—</span>
-            <div><div class="stars-display" id="summary-stars" aria-label="Sin calificaciones">☆☆☆☆☆</div><strong id="review-count">Sé la primera persona en opinar</strong><small>Las reseñas aparecerán aquí.</small></div>
+            <div><div class="stars-display" id="summary-stars" aria-label="Aún no hay calificaciones">☆☆☆☆☆</div><strong id="review-count">Opiniones verificadas</strong><small id="sales-count">Ventas entregadas verificadas</small></div>
           </div>
         </div>
         <div class="review-card">
-          <h3>Déjanos tu reseña</h3>
-          <p>Elige una calificación y cuéntanos brevemente tu experiencia.</p>
-          <form id="review-form">
+          <h3>Reseñas verificadas</h3>
+          <p>Solo puede opinar quien recibió una invitación en el correo registrado en un pedido entregado. Cada pedido admite una reseña.</p>
+          <div class="empty-reviews" id="review-access-message" aria-live="polite">Si ya recibiste tu pedido, revisa el correo registrado para abrir tu enlace personal.</div>
+          <form id="review-form" class="review-form" hidden>
             <label>Tu calificación</label>
             <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Selecciona una calificación de una a cinco estrellas">
               <button class="star-button" type="button" data-rating="1" role="radio" aria-label="1 estrella">★</button>
@@ -620,12 +628,11 @@
               <button class="star-button" type="button" data-rating="4" role="radio" aria-label="4 estrellas">★</button>
               <button class="star-button" type="button" data-rating="5" role="radio" aria-label="5 estrellas">★</button>
             </div>
-            <div class="field"><label for="review-name">Nombre</label><input id="review-name" type="text" placeholder="Tu nombre" maxlength="40" required></div>
-            <div class="field"><label for="review-comment">Comentario</label><textarea id="review-comment" placeholder="¿Qué te pareció?" maxlength="280" required></textarea></div>
-            <button class="btn-primary submit" type="submit">Publicar reseña <span aria-hidden="true">→</span></button>
-            <p class="form-foot">Las reseñas de esta demo se guardan en el navegador.</p>
+            <div class="field"><label for="review-name">Nombre para mostrar</label><input id="review-name" type="text" maxlength="40" required></div>
+            <div class="field"><label for="review-comment">Tu experiencia</label><textarea id="review-comment" placeholder="¿Qué te pareció?" maxlength="280" required></textarea></div>
+            <button class="btn-primary submit" type="submit">Publicar reseña verificada <span aria-hidden="true">→</span></button>
           </form>
-          <div class="review-list" id="review-list" aria-live="polite"><div class="empty-reviews">Todavía no hay reseñas publicadas.</div></div>
+          <div class="review-list" id="review-list" aria-live="polite"></div>
         </div>
       </div>
     </section>
@@ -748,14 +755,15 @@
     }
 
     let selectedRating = 0;
+    let reviewToken = "";
     const ratingButtons = document.querySelectorAll(".star-button");
-    const reviewList = document.getElementById("review-list");
-    let storedReviews = [];
-    try {
-      const savedReviews = JSON.parse(localStorage.getItem("beautyCareReviews") || "[]");
-      storedReviews = Array.isArray(savedReviews) ? savedReviews : [];
-    } catch (error) {
-      storedReviews = [];
+    const reviewForm = document.getElementById("review-form");
+    const reviewAccessMessage = document.getElementById("review-access-message");
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, function (character) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[character];
+      });
     }
 
     function paintStars(rating) {
@@ -766,24 +774,6 @@
       });
     }
 
-    function renderReviews() {
-      if (!storedReviews.length) return;
-      const average = storedReviews.reduce(function (sum, review) { return sum + review.rating; }, 0) / storedReviews.length;
-      document.getElementById("rating-number").textContent = average.toFixed(1);
-      document.getElementById("summary-stars").textContent = "★★★★★";
-      document.getElementById("summary-stars").setAttribute("aria-label", average.toFixed(1) + " de 5 estrellas");
-      document.getElementById("review-count").textContent = storedReviews.length + (storedReviews.length === 1 ? " reseña publicada" : " reseñas publicadas");
-      reviewList.innerHTML = storedReviews.slice().reverse().map(function (review) {
-        return '<article class="review-item"><div class="review-item-top"><strong>' + escapeHtml(review.name) + '</strong><time>' + escapeHtml(review.date) + '</time></div><div class="stars-display" aria-label="' + review.rating + ' de 5 estrellas">' + "★".repeat(review.rating) + "☆".repeat(5 - review.rating) + '</div><p>' + escapeHtml(review.comment) + '</p></article>';
-      }).join("");
-    }
-
-    function escapeHtml(value) {
-      return value.replace(/[&<>"']/g, function (character) {
-        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[character];
-      });
-    }
-
     ratingButtons.forEach(function (button) {
       button.addEventListener("click", function () {
         selectedRating = Number(button.dataset.rating);
@@ -791,42 +781,113 @@
       });
     });
 
-    document.getElementById("review-form").addEventListener("submit", function (event) {
+    async function loadVerifiedReviews() {
+      const list = document.getElementById("review-list");
+      try {
+        const response = await fetch("/api/reviews", { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error("No disponible");
+        const data = await response.json();
+        if (data.averageRating !== null) {
+          document.getElementById("rating-number").textContent = Number(data.averageRating).toFixed(1);
+          document.getElementById("summary-stars").textContent = "★★★★★";
+          document.getElementById("summary-stars").setAttribute("aria-label", Number(data.averageRating).toFixed(1) + " de 5 estrellas");
+        } else {
+          document.getElementById("rating-number").textContent = "—";
+          document.getElementById("summary-stars").textContent = "☆☆☆☆☆";
+        }
+        document.getElementById("review-count").textContent = data.reviewCount + (data.reviewCount === 1 ? " opinión verificada" : " opiniones verificadas");
+        document.getElementById("sales-count").textContent = Number(data.salesCount).toLocaleString("es-CO") + (data.salesCount === 1 ? " venta entregada verificada" : " ventas entregadas verificadas");
+        if (!data.reviews.length) {
+          list.innerHTML = '<div class="empty-reviews">Aún no hay opiniones verificadas publicadas.</div>';
+          return;
+        }
+        list.innerHTML = data.reviews.map(function (review) {
+          return '<article class="review-item"><div class="review-item-top"><strong>' + escapeHtml(review.name) + '</strong><time>' + escapeHtml(review.date) + '</time></div><small class="review-verified">Compra entregada verificada</small><div class="stars-display" aria-label="' + Number(review.rating) + ' de 5 estrellas">' + "★".repeat(Number(review.rating)) + "☆".repeat(5 - Number(review.rating)) + '</div><p>' + escapeHtml(review.comment) + '</p></article>';
+        }).join("");
+      } catch (_) {
+        document.getElementById("review-count").textContent = "Opiniones verificadas";
+        document.getElementById("sales-count").textContent = "El contador se activará al configurar el registro de pedidos.";
+        list.innerHTML = '<div class="empty-reviews">El sistema de opiniones verificadas se está configurando.</div>';
+      }
+    }
+
+    async function unlockReviewFromEmail() {
+      const params = new URLSearchParams(window.location.search);
+      reviewToken = params.get("resena") || "";
+      if (!reviewToken) return;
+      reviewAccessMessage.textContent = "Verificando tu invitación…";
+      try {
+        const response = await fetch("/api/reviews?token=" + encodeURIComponent(reviewToken), { headers: { Accept: "application/json" } });
+        const result = await response.json();
+        if (!response.ok || !result.eligible) throw new Error(result.error || "El enlace no es válido.");
+        document.getElementById("review-name").value = result.name || "";
+        reviewForm.hidden = false;
+        reviewAccessMessage.textContent = "Correo verificado. Comparte tu experiencia con tu pedido entregado.";
+      } catch (error) {
+        reviewAccessMessage.textContent = error.message || "No pudimos validar el enlace.";
+      }
+    }
+
+    reviewForm.addEventListener("submit", async function (event) {
       event.preventDefault();
       if (!selectedRating) {
         document.getElementById("star-picker").animate([{ transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "translateX(0)" }], { duration: 220 });
         return;
       }
-      storedReviews.push({
-        rating: selectedRating,
-        name: document.getElementById("review-name").value.trim(),
-        comment: document.getElementById("review-comment").value.trim(),
-        date: new Date().toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" })
-      });
+      const button = reviewForm.querySelector("button[type=submit]");
+      button.disabled = true;
       try {
-        localStorage.setItem("beautyCareReviews", JSON.stringify(storedReviews));
+        const response = await fetch("/api/reviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ token: reviewToken, rating: selectedRating, name: document.getElementById("review-name").value.trim(), comment: document.getElementById("review-comment").value.trim() })
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "No se pudo publicar la opinión.");
+        reviewForm.hidden = true;
+        reviewAccessMessage.textContent = "¡Gracias! Tu reseña verificada ya está publicada.";
+        const params = new URLSearchParams(window.location.search);
+        params.delete("resena");
+        history.replaceState(null, "", window.location.pathname + (params.size ? "?" + params.toString() : "") + "#resenas");
+        reviewToken = "";
+        loadVerifiedReviews();
       } catch (error) {
-        // La reseña sigue visible durante esta sesión aunque el navegador bloquee el almacenamiento.
+        reviewAccessMessage.textContent = error.message || "No pudimos publicar tu reseña. Inténtalo de nuevo.";
+        button.disabled = false;
       }
-      this.reset();
-      selectedRating = 0;
-      paintStars(0);
-      renderReviews();
     });
 
-    renderReviews();
+    loadVerifiedReviews();
+    unlockReviewFromEmail();
 
-    document.getElementById("order-form").addEventListener("submit", function (event) {
+    document.getElementById("order-form").addEventListener("submit", async function (event) {
       event.preventDefault();
       if (!this.checkValidity()) { this.reportValidity(); return; }
       const customerFirstName = document.getElementById("first-name").value.trim();
       const customerLastName = document.getElementById("last-name").value.trim();
       const customerPhone = document.getElementById("phone").value.trim();
-      const customerEmail = document.getElementById("email").value.trim() || "No registrado";
+      const customerEmail = document.getElementById("email").value.trim();
       const customerDepartment = document.getElementById("department").value;
       const customerCity = document.getElementById("city").value.trim();
       const customerAddress = document.getElementById("address").value.trim();
       const customerNotes = document.getElementById("notes").value.trim() || "Sin notas";
+      const submitButton = this.querySelector("button[type=submit]");
+      submitButton.disabled = true;
+      const whatsappTab = window.open("about:blank", "_blank");
+      if (whatsappTab) whatsappTab.opener = null;
+      let orderId = "Pendiente de guardar";
+      try {
+        const saveResponse = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ firstName: customerFirstName, lastName: customerLastName, email: customerEmail, privacyConsent: document.getElementById("privacy-consent").checked })
+        });
+        const savedOrder = await saveResponse.json();
+        if (!saveResponse.ok) throw new Error(savedOrder.error || "No pudimos guardar el pedido.");
+        orderId = savedOrder.orderId;
+      } catch (error) {
+        window.alert(error.message + " Puedes seguir con WhatsApp; te contactaremos allí.");
+      }
       const message = [
         "Hola, quiero pedir el Masajeador Facial Beauty Care 5 en 1.",
         "",
@@ -839,10 +900,13 @@
         "Dirección: " + customerAddress,
         "Notas: " + customerNotes,
         "Forma de pago: Contra entrega",
-        "Precio: $30.000"
+        "Precio: $30.000",
+        "Referencia de pedido: " + orderId
       ].join("\n");
       const whatsappUrl = "https://wa.me/573132049102?text=" + encodeURIComponent(message);
-      window.open(whatsappUrl, "_blank", "noopener");
+      if (whatsappTab && !whatsappTab.closed) whatsappTab.location.href = whatsappUrl;
+      else window.location.href = whatsappUrl;
+      submitButton.disabled = false;
       document.getElementById("order-card").classList.add("submitted");
       document.getElementById("order-card").scrollIntoView({ behavior: "smooth", block: "center" });
     });

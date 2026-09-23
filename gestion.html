@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#f05c98">
+  <title>Gestión privada · Beauty Care</title>
+  <style>
+    :root { color-scheme:light; --pink:#e94e91; --ink:#24212a; --muted:#706b77; --line:#eee7ed; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:32px 18px 60px; background:#fffafc; color:var(--ink); font:16px/1.5 system-ui,sans-serif; }
+    main { width:min(900px,100%); margin:auto; }
+    h1 { margin:0 0 5px; font-size:clamp(1.7rem,4vw,2.4rem); }
+    p { color:var(--muted); }
+    .card { margin-top:20px; padding:22px; border:1px solid var(--line); border-radius:18px; background:white; box-shadow:0 10px 32px #4822370e; }
+    .login { display:flex; flex-wrap:wrap; gap:9px; }
+    input,button { min-height:44px; padding:10px 13px; border:1px solid #e5dfe4; border-radius:9px; font:inherit; }
+    input { flex:1 1 250px; }
+    button { cursor:pointer; background:#fff; font-weight:700; }
+    button.primary { border-color:var(--pink); background:var(--pink); color:white; }
+    button:disabled { cursor:wait; opacity:.65; }
+    .status { min-height:24px; color:var(--muted); }
+    .order { display:grid; grid-template-columns:1fr auto; gap:12px; padding:16px 0; border-top:1px solid var(--line); }
+    .order small { display:block; color:var(--muted); overflow-wrap:anywhere; }
+    .actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:7px; }
+    .actions button { min-height:38px; padding:7px 10px; font-size:.82rem; }
+    @media(max-width:640px) { body{padding:22px 14px 45px}.order{grid-template-columns:1fr}.actions{justify-content:flex-start} }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Gestión privada de pedidos</h1>
+    <p>Confirma los datos desde WhatsApp. Marca “Entregado y pagado” solo después de comprobar que la persona recibió y pagó el producto; entonces se envía la invitación de reseña.</p>
+    <section class="card">
+      <form id="login" class="login">
+        <input id="admin-token" type="password" autocomplete="current-password" placeholder="Clave de administración" aria-label="Clave de administración" required>
+        <button class="primary" type="submit">Abrir pedidos</button>
+      </form>
+      <p id="status" class="status" aria-live="polite"></p>
+      <div id="orders"></div>
+    </section>
+  </main>
+  <script>
+    const statusLine = document.getElementById("status");
+    const ordersHost = document.getElementById("orders");
+    const tokenField = document.getElementById("admin-token");
+    let adminToken = sessionStorage.getItem("beautyCareAdminToken") || "";
+    tokenField.value = adminToken;
+
+    async function request(path, options = {}) {
+      return fetch(path, { ...options, headers: { "x-admin-token": adminToken, ...(options.headers || {}) } });
+    }
+    function addText(parent, tag, text, className) {
+      const element = document.createElement(tag);
+      element.textContent = text;
+      if (className) element.className = className;
+      parent.appendChild(element);
+      return element;
+    }
+    function actionButton(label, action, id, primary) {
+      const control = document.createElement("button");
+      control.type = "button";
+      control.textContent = label;
+      if (primary) control.className = "primary";
+      control.addEventListener("click", () => updateOrder(action, id, control));
+      return control;
+    }
+    async function loadOrders() {
+      statusLine.textContent = "Cargando pedidos…";
+      try {
+        const response = await request("/api/admin");
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "No se pudo abrir la gestión.");
+        ordersHost.replaceChildren();
+        if (!payload.orders.length) addText(ordersHost, "p", "Aún no hay pedidos registrados.");
+        payload.orders.forEach((order) => {
+          const row = document.createElement("article");
+          row.className = "order";
+          const info = document.createElement("div");
+          addText(info, "strong", `${order.first_name} ${order.last_name}`);
+          addText(info, "small", order.email);
+          addText(info, "small", `Pedido ${order.id} · ${new Date(order.created_at).toLocaleString("es-CO")} · ${order.status}`);
+          const actions = document.createElement("div");
+          actions.className = "actions";
+          actions.appendChild(actionButton("Corregir nombre/correo", "correct", order.id, false));
+          actions.appendChild(actionButton("Eliminar datos personales", "erase-data", order.id, false));
+          if (order.status === "pending") actions.appendChild(actionButton("Confirmar datos", "confirm", order.id, true));
+          if (order.status === "confirmed") actions.appendChild(actionButton("Marcar entregado y pagado", "deliver", order.id, true));
+          if (order.status === "delivered") actions.appendChild(actionButton("Reenviar invitación", "send-invite", order.id, false));
+          if (["pending", "confirmed"].includes(order.status)) actions.appendChild(actionButton("Cancelar", "cancel", order.id, false));
+          row.append(info, actions);
+          ordersHost.appendChild(row);
+        });
+        statusLine.textContent = "Pedidos actualizados.";
+      } catch (error) {
+        ordersHost.replaceChildren();
+        statusLine.textContent = error.message;
+      }
+    }
+    async function updateOrder(action, orderId, control) {
+      if (action === "erase-data" && !window.confirm("Se borrarán el nombre, el correo y la reseña de esta persona. La cifra de entregas se conserva anónima. ¿Continuar?")) return;
+      let correction = {};
+      if (action === "correct") {
+        const firstName = window.prompt("Nombre correcto:");
+        if (firstName === null) return;
+        const lastName = window.prompt("Apellido correcto:");
+        if (lastName === null) return;
+        const email = window.prompt("Correo correcto:");
+        if (email === null) return;
+        correction = { firstName, lastName, email };
+      }
+      control.disabled = true;
+      statusLine.textContent = "Guardando…";
+      try {
+        const response = await request("/api/admin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, orderId, ...correction })
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "No se pudo actualizar el pedido.");
+        statusLine.textContent = payload.message;
+        await loadOrders();
+      } catch (error) {
+        statusLine.textContent = error.message;
+        control.disabled = false;
+      }
+    }
+    document.getElementById("login").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      adminToken = tokenField.value;
+      sessionStorage.setItem("beautyCareAdminToken", adminToken);
+      await loadOrders();
+    });
+    if (adminToken) loadOrders();
+  </script>
+</body>
+</html>
