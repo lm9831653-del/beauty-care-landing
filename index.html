@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f05c98">
+  <meta name="description" content="Masajeador Facial 5 en 1 Beauty Care. Limpia, exfolia y masajea tu piel desde casa.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <title>Beauty Care | Masajeador Facial 5 en 1</title>
+  <style>
+    :root {
+      --pink: #e94e91;
+      --pink-dark: #c93273;
+      --pink-soft: #fff0f6;
+      --ink: #24212a;
+      --muted: #706b77;
+      --line: #eee7ed;
+      --cream: #fffafc;
+      --green: #4f8c70;
+      --shadow: 0 22px 60px rgba(72, 34, 55, .12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(1140px, calc(100% - 40px)); margin-inline: auto; }
+
+    .topbar {
+      color: #fff;
+      background: var(--pink-dark);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-align: center;
+      padding: 9px 16px;
+    }
+    header {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 250, 252, .88);
+      border-bottom: 1px solid rgba(238, 231, 237, .8);
+      backdrop-filter: blur(16px);
+    }
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: -.04em; }
+    .brand-mark {
+      width: 35px; height: 35px; border-radius: 12px 12px 12px 3px;
+      display: grid; place-items: center; color: #fff; background: var(--pink);
+      transform: rotate(-8deg);
+    }
+    .brand-mark svg { transform: rotate(8deg); }
+    .brand-name { font-size: 1.1rem; }
+    .brand-name span { color: var(--pink); }
+    .nav-links { display: flex; align-items: center; gap: 26px; color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .nav-links a:hover { color: var(--pink-dark); }
+    .nav-cta, .btn-primary {
+      border: 0;
+      color: #fff;
+      background: var(--pink);
+      box-shadow: 0 10px 22px rgba(233, 78, 145, .22);
+      font-weight: 800;
+      transition: .2s ease;
+    }
+    .nav-cta { padding: 11px 17px; border-radius: 99px; font-size: .86rem; }
+    .nav-cta:hover, .btn-primary:hover { background: var(--pink-dark); transform: translateY(-2px); }
+
+    .hero {
+      overflow: hidden;
+      padding: 66px 0 86px;
+      background:
+        radial-gradient(circle at 86% 20%, rgba(248, 181, 207, .35), transparent 25%),
+        radial-gradient(circle at 4% 58%, rgba(248, 218, 228, .6), transparent 24%),
+        var(--cream);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1.08fr; align-items: center; gap: 70px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--pink-dark); font-size: .76rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 25px; height: 2px; border-radius: 9px; background: var(--pink); }
+    h1 { margin: 18px 0 18px; max-width: 610px; font-size: clamp(2.65rem, 5vw, 4.55rem); line-height: .98; letter-spacing: -.065em; }
+    h1 em { color: var(--pink); font-style: normal; }
+    .hero-copy > p { max-width: 500px; margin: 0; color: var(--muted); font-size: 1.1rem; }
+    .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 17px; margin-top: 30px; }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 15px 22px; border-radius: 13px; font-size: .96rem; }
+    .price-wrap { display: flex; align-items: baseline; gap: 8px; }
+    .price { color: var(--ink); font-size: 1.7rem; font-weight: 900; letter-spacing: -.05em; }
+    .price-note { color: var(--muted); font-size: .78rem; }
+    .trust-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 33px; color: var(--muted); font-size: .78rem; font-weight: 700; }
+    .trust-item { display: inline-flex; align-items: center; gap: 7px; }
+    .trust-item svg { color: var(--green); }
+
+    .product-visual { position: relative; min-height: 570px; }
+    .visual-blob {
+      position: absolute; inset: 42px 10px 16px 20px;
+      border-radius: 47% 53% 55% 45% / 42% 40% 60% 58%;
+      background: linear-gradient(145deg, #fff, #ffeaf3);
+      transform: rotate(-4deg);
+    }
+    .visual-blob::after {
+      content: ""; position: absolute; inset: 32px; border: 1px solid rgba(233, 78, 145, .17);
+      border-radius: inherit;
+    }
+    .main-product {
+      position: absolute; z-index: 1; width: 86%; height: 520px; max-width: 520px;
+      right: 0; top: 10px; object-fit: contain; filter: drop-shadow(14px 22px 17px rgba(61, 22, 44, .13));
+      mix-blend-mode: multiply;
+    }
+    .floating-note {
+      position: absolute; z-index: 2; right: 0; bottom: 55px;
+      display: flex; align-items: center; gap: 10px; padding: 13px 16px;
+      border: 1px solid rgba(255, 255, 255, .8); border-radius: 15px;
+      color: var(--ink); background: rgba(255,255,255,.9); box-shadow: var(--shadow);
+      font-size: .78rem; font-weight: 800;
+    }
+    .floating-note .dot { width: 9px; height: 9px; border-radius: 50%; background: #63b28b; box-shadow: 0 0 0 5px #e7f5ec; }
+    .badge-5 { position: absolute; z-index: 2; left: 8px; top: 50px; width: 90px; height: 90px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--pink); box-shadow: 0 13px 25px rgba(233,78,145,.25); text-align: center; font-size: .76rem; font-weight: 900; line-height: 1.05; transform: rotate(-11deg); }
+    .badge-5 strong { display: block; font-size: 1.8rem; letter-spacing: -.08em; }
+
+    section { padding: 92px 0; }
+    .section-heading { max-width: 650px; margin: 0 auto 42px; text-align: center; }
+    .section-heading h2 { margin: 12px 0 12px; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.02; letter-spacing: -.055em; }
+    .section-heading p { margin: 0; color: var(--muted); }
+    .benefits { background: #fff; }
+    .benefit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .benefit-card { padding: 26px 22px; border: 1px solid var(--line); border-radius: var(--radius-md); background: #fff; }
+    .icon-box { width: 46px; height: 46px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 14px; color: var(--pink-dark); background: var(--pink-soft); }
+    .benefit-card h3 { margin: 0 0 7px; font-size: 1rem; }
+    .benefit-card p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    .how { background: var(--pink-soft); }
+    .how-grid { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 76px; }
+    .how-image { overflow: hidden; border-radius: var(--radius-lg); box-shadow: var(--shadow); background: #fff; }
+    .how-image img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+    .how-copy h2 { margin: 12px 0 15px; font-size: clamp(2rem, 4vw, 3.15rem); line-height: 1.02; letter-spacing: -.06em; }
+    .how-copy > p { color: var(--muted); }
+    .steps { display: grid; gap: 20px; margin-top: 26px; }
+    .step { display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+    .step-number { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--pink); font-size: .85rem; font-weight: 900; }
+    .step h3 { margin: 1px 0 3px; font-size: .98rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    .reviews { background: #fff; }
+    .reviews-grid { display: grid; grid-template-columns: .82fr 1.18fr; gap: 54px; align-items: start; }
+    .reviews-intro h2 { margin: 12px 0 14px; font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.02; letter-spacing: -.06em; }
+    .reviews-intro > p { max-width: 430px; color: var(--muted); }
+    .rating-summary { display: flex; align-items: center; gap: 14px; margin-top: 28px; padding: 17px 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--cream); }
+    .rating-number { color: var(--ink); font-size: 1.75rem; font-weight: 900; line-height: 1; }
+    .rating-summary strong { display: block; font-size: .85rem; }
+    .rating-summary small { display: block; margin-top: 2px; color: var(--muted); font-size: .72rem; }
+    .stars-display { color: #f2aa30; font-size: 1.1rem; letter-spacing: 2px; }
+    .review-card { padding: 27px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 14px 40px rgba(72, 34, 55, .07); }
+    .review-card h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .review-card > p { margin: 0 0 18px; color: var(--muted); font-size: .82rem; }
+    .star-picker { display: flex; gap: 5px; margin: 6px 0 17px; }
+    .star-button { width: 32px; height: 32px; padding: 0; border: 1px solid #eadfe5; border-radius: 9px; color: #d8cbd2; background: #fff; font-size: 1.15rem; line-height: 1; transition: .15s ease; }
+    .star-button:hover, .star-button.selected { color: #f2aa30; border-color: #f3cf87; background: #fff9ed; transform: translateY(-1px); }
+    textarea { width: 100%; min-height: 102px; resize: vertical; padding: 12px 13px; border: 1px solid #e5dfe4; border-radius: 10px; outline: none; color: var(--ink); background: #fff; font: inherit; font-size: .87rem; }
+    textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(233,78,145,.1); }
+    .review-list { display: grid; gap: 12px; margin-top: 18px; }
+    .review-item { display: grid; gap: 5px; padding: 15px 16px; border-radius: 14px; background: var(--pink-soft); }
+    .review-item-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .review-item strong { font-size: .82rem; }
+    .review-item time { color: var(--muted); font-size: .68rem; }
+    .review-item .stars-display { font-size: .78rem; letter-spacing: 1px; }
+    .review-item p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .empty-reviews { padding: 15px 16px; border: 1px dashed #e7d9e2; border-radius: 14px; color: var(--muted); font-size: .8rem; }
+
+    .accessories { background: #fff; }
+    .accessory-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .accessory { padding: 16px 12px 18px; border: 1px solid var(--line); border-radius: 16px; text-align: center; background: #fff; }
+    .accessory-image { height: 190px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 12px; background: #fff; }
+    .accessory-image img { width: 100%; height: 100%; padding: 6px; border-radius: 12px; object-fit: contain; }
+    .accessory-image svg { color: var(--pink); }
+    .accessory strong { display: block; font-size: .82rem; }
+    .accessory span { display: block; margin-top: 3px; color: var(--muted); font-size: .72rem; }
+    .additional-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+    .additional-gallery figure { overflow: hidden; margin: 0; border: 1px solid var(--line); border-radius: 16px; background: #fcf8fa; }
+    .additional-gallery img { width: 100%; height: 230px; padding: 8px; object-fit: contain; background: #fff; }
+    .additional-gallery figcaption { padding: 12px 14px; color: var(--muted); font-size: .76rem; font-weight: 700; text-align: center; }
+    .accessory-note { max-width: 570px; margin: 28px auto 0; color: var(--muted); text-align: center; font-size: .78rem; }
+    .gallery-carousel { position: relative; }
+    .carousel-window { overflow: hidden; padding: 4px 2px 12px; }
+    .carousel-track { display: flex; gap: 16px; touch-action: pan-y; transition: transform .4s cubic-bezier(.22,.61,.36,1); }
+    .gallery-slide { flex: 0 0 calc((100% - 32px) / 3); min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 9px 22px rgba(72,34,55,.06); }
+    .gallery-slide img { width: 100%; height: 310px; padding: 10px; object-fit: contain; background: #fbf8fa; }
+    .gallery-caption { min-height: 78px; padding: 15px 16px 16px; border-top: 1px solid var(--line); background: #fff; }
+    .gallery-caption strong { display: block; font-size: .88rem; }
+    .gallery-caption span { display: block; margin-top: 4px; color: var(--muted); font-size: .75rem; line-height: 1.35; }
+    .carousel-control { position: absolute; z-index: 1; top: 45%; width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid #eadfe5; border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 7px 18px rgba(72,34,55,.12); transform: translateY(-50%); transition: .2s ease; }
+    .carousel-control:hover { color: #fff; border-color: var(--pink); background: var(--pink); }
+    .carousel-control:disabled { opacity: .35; cursor: default; }
+    .carousel-control:disabled:hover { color: var(--ink); border-color: #eadfe5; background: rgba(255,255,255,.96); }
+    .carousel-control.prev { left: -21px; }
+    .carousel-control.next { right: -21px; }
+    .carousel-footer { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 5px; }
+    .carousel-dots { display: flex; gap: 6px; }
+    .carousel-dot { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%; background: #dfd4db; transition: .2s ease; }
+    .carousel-dot.active { width: 22px; border-radius: 10px; background: var(--pink); }
+    .carousel-status { color: var(--muted); font-size: .72rem; font-weight: 700; }
+
+    .details-section { background: var(--cream); }
+    .details-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 54px; align-items: start; }
+    .details-copy h2 { margin: 12px 0 14px; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.02; letter-spacing: -.06em; }
+    .details-copy > p { max-width: 480px; color: var(--muted); }
+    .spec-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 26px; }
+    .spec-item { padding: 17px 16px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+    .spec-item span { display: block; color: var(--muted); font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .spec-item strong { display: block; margin-top: 5px; font-size: .9rem; }
+    .faq-panel { padding: 25px 27px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 14px 40px rgba(72,34,55,.06); }
+    .faq-panel h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .faq-panel > p { margin: 0 0 14px; color: var(--muted); font-size: .8rem; }
+    .faq-item { border-top: 1px solid var(--line); }
+    .faq-item summary { display: flex; justify-content: space-between; gap: 14px; align-items: center; padding: 15px 0; color: var(--ink); cursor: pointer; list-style: none; font-size: .86rem; font-weight: 800; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; color: var(--pink); font-size: 1.2rem; font-weight: 400; }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-item p { margin: -3px 0 15px; color: var(--muted); font-size: .8rem; line-height: 1.55; }
+    .trust-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
+    .trust-card { display: flex; align-items: center; gap: 11px; padding: 14px; border: 1px solid rgba(233,78,145,.14); border-radius: 14px; background: rgba(255,255,255,.7); }
+    .trust-card svg { flex: 0 0 auto; color: var(--pink-dark); }
+    .trust-card strong { display: block; font-size: .78rem; }
+    .trust-card span { display: block; margin-top: 2px; color: var(--muted); font-size: .68rem; }
+
+    .order { background: linear-gradient(140deg, #fff3f8, #fffafc); }
+    .order-grid { display: grid; grid-template-columns: 1fr .9fr; gap: 55px; align-items: center; }
+    .order-copy h2 { max-width: 530px; margin: 12px 0 16px; font-size: clamp(2.1rem, 4vw, 3.35rem); line-height: .99; letter-spacing: -.06em; }
+    .order-copy > p { max-width: 520px; color: var(--muted); }
+    .included { display: grid; gap: 11px; margin-top: 24px; color: var(--ink); font-size: .88rem; font-weight: 700; }
+    .included span { display: inline-flex; align-items: center; gap: 9px; }
+    .included svg { color: var(--green); flex: 0 0 auto; }
+    .order-card { padding: 30px; border: 1px solid rgba(233,78,145,.15); border-radius: 24px; background: #fff; box-shadow: var(--shadow); }
+    .checkout-brand { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; color: var(--ink); font-size: .92rem; font-weight: 900; letter-spacing: -.04em; }
+    .checkout-brand .brand-mark { width: 27px; height: 27px; border-radius: 9px 9px 9px 2px; }
+    .checkout-brand .brand-mark svg { width: 15px; height: 15px; }
+    .checkout-brand span:last-child span { color: var(--pink); }
+    .order-card-head { display: flex; justify-content: space-between; gap: 15px; align-items: start; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .order-card h3 { margin: 0; font-size: 1.05rem; }
+    .order-card .card-price { color: var(--pink-dark); font-size: 1.45rem; font-weight: 900; white-space: nowrap; }
+    .field { margin-top: 16px; }
+    label { display: block; margin-bottom: 6px; color: var(--ink); font-size: .76rem; font-weight: 800; }
+    input, select { width: 100%; padding: 12px 13px; border: 1px solid #e5dfe4; border-radius: 10px; outline: none; color: var(--ink); background: #fff; font-size: .87rem; }
+    input:focus, select:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(233,78,145,.1); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .submit { width: 100%; margin-top: 21px; }
+    .form-foot { margin: 12px 0 0; color: var(--muted); font-size: .7rem; text-align: center; }
+    .success { display: none; padding: 16px; border-radius: 12px; color: #276346; background: #eaf8ef; font-size: .85rem; font-weight: 700; }
+    .success.show { display: block; }
+    .order-card.submitted .form-content { display: none; }
+    .order-card.submitted .success { display: block; }
+
+    footer { padding: 26px 0 32px; color: var(--muted); background: #fff; font-size: .76rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+    .footer-inner strong { color: var(--ink); }
+    .mobile-buy { display: none; }
+
+    @media (max-width: 880px) {
+      .hero-grid, .how-grid, .order-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero { padding-top: 48px; }
+      .hero-copy { text-align: center; }
+      .hero-copy > p { margin-inline: auto; }
+      .hero-actions, .trust-row { justify-content: center; }
+      .product-visual { min-height: 470px; width: min(100%, 600px); margin: auto; }
+      .benefit-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-image { max-width: 540px; margin: auto; }
+      .how-copy { text-align: center; }
+      .steps { max-width: 480px; margin-inline: auto; text-align: left; }
+      .reviews-grid { grid-template-columns: 1fr; gap: 32px; }
+      .reviews-intro { text-align: center; }
+      .reviews-intro > p { margin-inline: auto; }
+      .rating-summary { width: fit-content; margin-inline: auto; text-align: left; }
+      .gallery-slide { flex-basis: calc((100% - 16px) / 2); }
+      .details-grid { grid-template-columns: 1fr; gap: 32px; }
+      .details-copy { text-align: center; }
+      .details-copy > p { margin-inline: auto; }
+      .order-copy { text-align: center; }
+      .included { width: fit-content; margin-inline: auto; text-align: left; }
+    }
+    @media (max-width: 600px) {
+      .container { width: min(100% - 28px, 1140px); }
+      .topbar { font-size: .68rem; }
+      .nav { min-height: 62px; }
+      .nav-links { display: none; }
+      .nav-cta { padding: 9px 13px; font-size: .76rem; }
+      .hero { padding: 42px 0 58px; }
+      h1 { font-size: 3rem; }
+      .hero-copy > p { font-size: 1rem; }
+      .product-visual { min-height: 360px; }
+      .main-product { top: 8px; width: 92%; height: 350px; }
+      .visual-blob { inset: 25px 0 8px; }
+      .badge-5 { top: 24px; left: 2px; width: 72px; height: 72px; font-size: .62rem; }
+      .badge-5 strong { font-size: 1.45rem; }
+      .floating-note { right: -4px; bottom: 18px; padding: 10px 12px; font-size: .68rem; }
+      section { padding: 64px 0; }
+      .benefit-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .benefit-card { padding: 19px 15px; }
+      .benefit-card p { font-size: .78rem; }
+      .carousel-window { margin-inline: -2px; }
+      .gallery-slide { flex-basis: 100%; }
+      .gallery-slide img { height: 330px; }
+      .carousel-control { top: 43%; width: 38px; height: 38px; }
+      .carousel-control.prev { left: 7px; }
+      .carousel-control.next { right: 7px; }
+      .spec-list { gap: 8px; }
+      .spec-item { padding: 14px 12px; }
+      .faq-panel { padding: 21px 18px; }
+      .trust-strip { grid-template-columns: 1fr; }
+      .order-card { padding: 22px 17px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .mobile-buy { position: fixed; z-index: 5; right: 12px; bottom: 12px; left: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 10px 10px 15px; border: 1px solid rgba(255,255,255,.6); border-radius: 16px; color: #fff; background: rgba(38, 31, 37, .92); box-shadow: 0 10px 35px rgba(0,0,0,.2); backdrop-filter: blur(12px); }
+      .mobile-buy span { font-size: .78rem; font-weight: 800; }
+      .mobile-buy a { padding: 10px 14px; border-radius: 10px; color: #fff; background: var(--pink); font-size: .78rem; font-weight: 900; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">ENVÍOS A TODO COLOMBIA · PAGO CONTRA ENTREGA · 2 BATERÍAS AA NO INCLUIDAS</div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="Beauty Care inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20.5S4.5 16.1 4.5 10.2A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.9-7.5 10.3-7.5 10.3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-name">beauty<span>care</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#beneficios">Beneficios</a>
+        <a href="#resenas">Opiniones</a>
+        <a href="#accesorios">Galería</a>
+        <a href="#pedido">Cómo pedir</a>
+      </nav>
+      <a class="nav-cta" href="#pedido">Comprar ahora</a>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Tu ritual de cuidado en casa</span>
+          <h1>Una piel más limpia, suave y <em>radiante.</em></h1>
+          <p>Conoce el masajeador facial Beauty Care 5 en 1: cinco accesorios para limpiar, exfoliar y masajear tu piel en pocos minutos.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#pedido">
+              Quiero el mío
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <div class="price-wrap"><span class="price">$30.000</span><span class="price-note">Precio final · COP</span></div>
+          </div>
+          <div class="trust-row">
+            <span class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Fácil de usar</span>
+            <span class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Uso diario</span>
+            <span class="trust-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Compacto</span>
+          </div>
+        </div>
+        <div class="product-visual" aria-label="Masajeador Facial Beauty Care y sus accesorios">
+          <div class="visual-blob"></div>
+          <div class="badge-5"><strong>5</strong>accesorios<br>en 1</div>
+          <img class="main-product" src="assets/producto-set.jpeg" alt="Masajeador facial Beauty Care con cinco accesorios">
+          <div class="floating-note"><span class="dot"></span> Rutina de belleza simple</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits" id="beneficios">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Más que un masaje</span>
+          <h2>Todo lo que tu piel necesita, en un solo dispositivo.</h2>
+          <p>Diseñado para acompañar tu rutina de cuidado facial sin complicaciones.</p>
+        </div>
+        <div class="benefit-grid">
+          <article class="benefit-card">
+            <div class="icon-box"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M12 3c3.5 3.2 6 6.3 6 10a6 6 0 0 1-12 0c0-3.7 2.5-6.8 6-10Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 14.5c.3 1.1 1.1 1.8 2.3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>Limpieza profunda</h3><p>Ayuda a retirar impurezas y residuos de la superficie de la piel.</p>
+          </article>
+          <article class="benefit-card">
+            <div class="icon-box"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M7 20 17 4M5 8l3-3 3 3-3 3-3-3Zm8 8 3-3 3 3-3 3-3-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+            <h3>Exfoliación suave</h3><p>Remueve células muertas para dejar una textura más lisa y uniforme.</p>
+          </article>
+          <article class="benefit-card">
+            <div class="icon-box"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M12 4v16M5.5 5.5l13 13m0-13-13 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>Masaje relajante</h3><p>Disfruta un momento de autocuidado mientras masajeas rostro y mejillas.</p>
+          </article>
+          <article class="benefit-card">
+            <div class="icon-box"><svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 16c2.2-4.7 5.1-7 8-7 3.2 0 5.1 2.7 8 1.6M4 20c2.2-4.7 5.1-7 8-7 3.2 0 5.1 2.7 8 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>Mejor aplicación</h3><p>Ayuda a distribuir cremas y productos de forma más uniforme.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how">
+      <div class="container how-grid">
+        <div class="how-image"><img src="assets/producto-en-uso.jpeg" alt="Mujer utilizando el masajeador facial Beauty Care"></div>
+        <div class="how-copy">
+          <span class="eyebrow">Tu momento Beauty Care</span>
+          <h2>Una rutina de belleza que sí puedes mantener.</h2>
+          <p>Úsalo durante unos minutos y convierte el cuidado de tu piel en un hábito sencillo, práctico y agradable.</p>
+          <div class="steps">
+            <div class="step"><span class="step-number">1</span><div><h3>Elige tu accesorio</h3><p>Selecciona el cabezal según el momento de tu rutina.</p></div></div>
+            <div class="step"><span class="step-number">2</span><div><h3>Enciende y masajea</h3><p>Funciona con 2 baterías AA (no incluidas) y es muy fácil de manejar.</p></div></div>
+            <div class="step"><span class="step-number">3</span><div><h3>Disfruta el resultado</h3><p>Finaliza con tu crema o sérum favorito para mantener la piel nutrida.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="accessories" id="accesorios">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Conócelo mejor</span>
+          <h2>Diseñado para tu rutina diaria.</h2>
+          <p>Detalles reales del producto para que compres con claridad y confianza.</p>
+        </div>
+        <div class="gallery-carousel" id="product-gallery" aria-label="Galería de imágenes del producto">
+          <button class="carousel-control prev" type="button" aria-label="Imagen anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="carousel-window">
+            <div class="carousel-track">
+              <article class="gallery-slide"><img src="assets/producto-set.jpeg" alt="Masajeador facial con todos sus accesorios"><div class="gallery-caption"><strong>Todo en un solo kit</strong><span>Masajeador y cinco cabezales intercambiables.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-en-uso.jpeg" alt="Masajeador facial utilizado sobre el rostro"><div class="gallery-caption"><strong>Limpieza facial</strong><span>Una rutina sencilla para usar en casa.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-en-mano.jpeg" alt="Masajeador facial sostenido en la mano"><div class="gallery-caption"><strong>Cómodo de sostener</strong><span>Diseño compacto y ligero.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-detalles.jpeg" alt="Detalle del interruptor, cepillo y baterías"><div class="gallery-caption"><strong>Detalles reales</strong><span>Control de velocidad y compartimento para 2 AA.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-medidas.jpeg" alt="Medidas del masajeador facial"><div class="gallery-caption"><strong>Tamaño práctico</strong><span>13 cm de largo y 4,7 cm de ancho.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-frontal.jpg" alt="Masajeador facial Beauty Care en vista frontal"><div class="gallery-caption"><strong>Vista frontal</strong><span>Con todos sus accesorios visibles.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-agua.jpg" alt="Masajeador facial Beauty Care con efecto de agua"><div class="gallery-caption"><strong>Uso con agua</strong><span>El cepillo acompaña tu limpieza facial.</span></div></article>
+              <article class="gallery-slide"><img src="assets/producto-detalles.jpg" alt="Masajeador facial Beauty Care y sus accesorios"><div class="gallery-caption"><strong>Accesorios intercambiables</strong><span>Elige el cabezal para cada momento.</span></div></article>
+            </div>
+          </div>
+          <button class="carousel-control next" type="button" aria-label="Siguiente imagen">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="carousel-footer"><div class="carousel-dots" aria-label="Seleccionar imagen"></div><span class="carousel-status">1 / 8</span></div>
+        </div>
+        <p class="accessory-note">Para una experiencia cómoda, usa cada cabezal con movimientos suaves y evita aplicar presión excesiva.</p>
+      </div>
+    </section>
+
+    <section class="details-section">
+      <div class="container details-grid">
+        <div class="details-copy">
+          <span class="eyebrow">Información clara</span>
+          <h2>Lo importante, sin letras pequeñas.</h2>
+          <p>Conoce exactamente qué recibes y cómo funciona antes de hacer tu pedido.</p>
+          <div class="spec-list">
+            <div class="spec-item"><span>Accesorios</span><strong>5 cabezales</strong></div>
+            <div class="spec-item"><span>Alimentación</span><strong>2 baterías AA</strong></div>
+            <div class="spec-item"><span>Medidas</span><strong>13 × 4,7 cm</strong></div>
+            <div class="spec-item"><span>Diseño</span><strong>Blanco y rosa</strong></div>
+          </div>
+          <div class="trust-strip">
+            <div class="trust-card"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3 5 6v5c0 4.7 2.9 8.4 7 10 4.1-1.6 7-5.3 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><strong>Compra informada</strong><span>Detalles visibles</span></div></div>
+            <div class="trust-card"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v12H4zM8 7V5h8v2M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg><div><strong>Kit completo</strong><span>Todo organizado</span></div></div>
+            <div class="trust-card"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><div><strong>Uso sencillo</strong><span>En pocos minutos</span></div></div>
+          </div>
+        </div>
+        <div class="faq-panel">
+          <h3>Preguntas frecuentes</h3>
+          <p>Respuestas rápidas antes de elegir tu masajeador.</p>
+          <details class="faq-item" open><summary>¿Qué incluye el kit?</summary><p>Incluye el masajeador facial Beauty Care y cinco accesorios intercambiables para limpieza, masaje, aplicación y exfoliación.</p></details>
+          <details class="faq-item"><summary>¿Qué baterías necesita?</summary><p>Funciona con dos baterías AA, que no vienen incluidas en el producto.</p></details>
+          <details class="faq-item"><summary>¿Cómo se usa?</summary><p>Instala el cabezal que prefieras, enciende el dispositivo y úsalo con movimientos suaves sobre la piel limpia. Empieza con sesiones cortas.</p></details>
+          <details class="faq-item"><summary>¿Cómo limpio los accesorios?</summary><p>Retira el cabezal, límpialo después de usarlo y déjalo secar antes de guardarlo.</p></details>
+          <details class="faq-item"><summary>¿Cómo solicito mi pedido?</summary><p>Completa el formulario al final de la página. Te contactaremos para confirmar los datos, disponibilidad, envío y forma de pago.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="order" id="pedido">
+      <div class="container order-grid">
+        <div class="order-copy">
+          <span class="eyebrow">Empieza hoy</span>
+          <h2>Tu ritual de cuidado facial está a un clic.</h2>
+          <p>Recibe tu masajeador facial Beauty Care 5 en 1 y disfruta una rutina completa desde casa.</p>
+          <div class="included">
+            <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Masajeador facial Beauty Care</span>
+            <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 5 accesorios intercambiables</span>
+            <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Diseño compacto y ligero</span>
+          </div>
+        </div>
+        <div class="order-card" id="order-card">
+          <div class="checkout-brand">
+            <span class="brand-mark" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 20.5S4.5 16.1 4.5 10.2A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 7.5 2.6c0 5.9-7.5 10.3-7.5 10.3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+            <span>beauty<span>care</span></span>
+          </div>
+          <div class="order-card-head"><h3>Solicita el tuyo</h3><span class="card-price">$30.000</span></div>
+          <div class="form-content">
+            <form id="order-form">
+              <div class="form-row">
+                <div class="field"><label for="first-name">Nombres</label><input id="first-name" name="first-name" type="text" placeholder="Tus nombres" autocomplete="given-name" required></div>
+                <div class="field"><label for="last-name">Apellidos</label><input id="last-name" name="last-name" type="text" placeholder="Tus apellidos" autocomplete="family-name" required></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label for="phone">Número de teléfono</label><input id="phone" name="phone" type="tel" placeholder="300 000 0000" autocomplete="tel" required></div>
+                <div class="field"><label for="email">Correo electrónico <span class="optional">(opcional)</span></label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email"></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label for="department">Departamento</label><select id="department" name="department" autocomplete="address-level1" required>
+                  <option value="">Selecciona tu departamento</option>
+                  <option>Amazonas</option><option>Antioquia</option><option>Arauca</option><option>Atlántico</option>
+                  <option>Bogotá D.C.</option><option>Bolívar</option><option>Boyacá</option><option>Caldas</option>
+                  <option>Caquetá</option><option>Casanare</option><option>Cauca</option><option>Cesar</option>
+                  <option>Chocó</option><option>Córdoba</option><option>Cundinamarca</option><option>Guainía</option>
+                  <option>Guaviare</option><option>Huila</option><option>La Guajira</option><option>Magdalena</option>
+                  <option>Meta</option><option>Nariño</option><option>Norte de Santander</option><option>Putumayo</option>
+                  <option>Quindío</option><option>Risaralda</option><option>San Andrés y Providencia</option><option>Santander</option>
+                  <option>Sucre</option><option>Tolima</option><option>Valle del Cauca</option><option>Vaupés</option><option>Vichada</option>
+                </select></div>
+                <div class="field"><label for="city">Ciudad</label><input id="city" name="city" type="text" placeholder="Tu ciudad" autocomplete="address-level2" required></div>
+              </div>
+              <div class="field"><label for="address">Dirección y complementos</label><input id="address" name="address" type="text" placeholder="Calle, carrera, número, barrio y referencias" autocomplete="street-address" required></div>
+              <div class="field"><label for="notes">Notas para el proveedor <span class="optional">(opcional)</span></label><textarea id="notes" name="notes" rows="3" placeholder="Indicaciones para la entrega"></textarea></div>
+              <button class="btn-primary submit" type="submit">Quiero pedirlo <span aria-hidden="true">→</span></button>
+              <p class="form-foot">Pago contra entrega disponible · Te contactaremos para confirmar disponibilidad y envío.</p>
+            </form>
+          </div>
+          <div class="success" role="status">✓ ¡Solicitud recibida! Te contactaremos pronto para confirmar los datos de tu envío.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews" id="resenas">
+      <div class="container reviews-grid">
+        <div class="reviews-intro">
+          <span class="eyebrow">Opiniones reales</span>
+          <h2>Tu experiencia también cuenta.</h2>
+          <p>Después de probarlo, comparte qué te pareció el masajeador y ayuda a otras personas a elegir con confianza.</p>
+          <div class="rating-summary" id="rating-summary">
+            <span class="rating-number" id="rating-number">—</span>
+            <div><div class="stars-display" id="summary-stars" aria-label="Sin calificaciones">☆☆☆☆☆</div><strong id="review-count">Sé la primera persona en opinar</strong><small>Las reseñas aparecerán aquí.</small></div>
+          </div>
+        </div>
+        <div class="review-card">
+          <h3>Déjanos tu reseña</h3>
+          <p>Elige una calificación y cuéntanos brevemente tu experiencia.</p>
+          <form id="review-form">
+            <label>Tu calificación</label>
+            <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Selecciona una calificación de una a cinco estrellas">
+              <button class="star-button" type="button" data-rating="1" role="radio" aria-label="1 estrella">★</button>
+              <button class="star-button" type="button" data-rating="2" role="radio" aria-label="2 estrellas">★</button>
+              <button class="star-button" type="button" data-rating="3" role="radio" aria-label="3 estrellas">★</button>
+              <button class="star-button" type="button" data-rating="4" role="radio" aria-label="4 estrellas">★</button>
+              <button class="star-button" type="button" data-rating="5" role="radio" aria-label="5 estrellas">★</button>
+            </div>
+            <div class="field"><label for="review-name">Nombre</label><input id="review-name" type="text" placeholder="Tu nombre" maxlength="40" required></div>
+            <div class="field"><label for="review-comment">Comentario</label><textarea id="review-comment" placeholder="¿Qué te pareció?" maxlength="280" required></textarea></div>
+            <button class="btn-primary submit" type="submit">Publicar reseña <span aria-hidden="true">→</span></button>
+            <p class="form-foot">Las reseñas de esta demo se guardan en el navegador.</p>
+          </form>
+          <div class="review-list" id="review-list" aria-live="polite"><div class="empty-reviews">Todavía no hay reseñas publicadas.</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner"><span><strong>beautycare</strong> · Cuidado simple para sentirte bien.</span><span>Envíos a todo Colombia · Compra segura</span></div>
+  </footer>
+  <div class="mobile-buy"><span>Tu rutina empieza aquí</span><a href="#pedido">Pedir ahora</a></div>
+
+  <script>
+    const carousel = document.getElementById("product-gallery");
+    if (carousel) {
+      const carouselTrack = carousel.querySelector(".carousel-track");
+      const carouselSlides = Array.from(carousel.querySelectorAll(".gallery-slide"));
+      const carouselDots = carousel.querySelector(".carousel-dots");
+      const carouselStatus = carousel.querySelector(".carousel-status");
+      const previousButton = carousel.querySelector(".carousel-control.prev");
+      const nextButton = carousel.querySelector(".carousel-control.next");
+      let carouselIndex = 0;
+      let carouselStartX = 0;
+
+      function visibleSlides() {
+        if (window.innerWidth <= 600) return 1;
+        if (window.innerWidth <= 880) return 2;
+        return 3;
+      }
+
+      function maxCarouselIndex() {
+        return Math.max(0, carouselSlides.length - visibleSlides());
+      }
+
+      function buildCarouselDots() {
+        const totalPositions = maxCarouselIndex() + 1;
+        carouselDots.innerHTML = "";
+        for (let i = 0; i < totalPositions; i += 1) {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "carousel-dot";
+          dot.setAttribute("aria-label", "Mostrar imágenes " + (i + 1));
+          dot.addEventListener("click", function () {
+            carouselIndex = i;
+            updateCarousel();
+          });
+          carouselDots.appendChild(dot);
+        }
+      }
+
+      function updateCarousel() {
+        carouselIndex = Math.min(carouselIndex, maxCarouselIndex());
+        const slideWidth = carouselSlides[0].getBoundingClientRect().width;
+        const gap = parseFloat(getComputedStyle(carouselTrack).gap) || 0;
+        carouselTrack.style.transform = "translateX(-" + (carouselIndex * (slideWidth + gap)) + "px)";
+        previousButton.disabled = carouselIndex === 0;
+        nextButton.disabled = carouselIndex === maxCarouselIndex();
+        carouselStatus.textContent = (carouselIndex + 1) + " / " + carouselSlides.length;
+        Array.from(carouselDots.children).forEach(function (dot, dotIndex) {
+          dot.classList.toggle("active", dotIndex === carouselIndex);
+        });
+      }
+
+      previousButton.addEventListener("click", function () {
+        carouselIndex -= 1;
+        updateCarousel();
+      });
+      nextButton.addEventListener("click", function () {
+        carouselIndex += 1;
+        updateCarousel();
+      });
+      carouselTrack.addEventListener("pointerdown", function (event) {
+        carouselStartX = event.clientX;
+      });
+      carouselTrack.addEventListener("pointerup", function (event) {
+        const distance = event.clientX - carouselStartX;
+        if (Math.abs(distance) > 45) {
+          carouselIndex += distance < 0 ? 1 : -1;
+          updateCarousel();
+        }
+      });
+      window.addEventListener("resize", function () {
+        buildCarouselDots();
+        updateCarousel();
+      });
+      buildCarouselDots();
+      updateCarousel();
+    }
+
+    let selectedRating = 0;
+    const ratingButtons = document.querySelectorAll(".star-button");
+    const reviewList = document.getElementById("review-list");
+    let storedReviews = [];
+    try {
+      const savedReviews = JSON.parse(localStorage.getItem("beautyCareReviews") || "[]");
+      storedReviews = Array.isArray(savedReviews) ? savedReviews : [];
+    } catch (error) {
+      storedReviews = [];
+    }
+
+    function paintStars(rating) {
+      ratingButtons.forEach(function (button) {
+        const active = Number(button.dataset.rating) <= rating;
+        button.classList.toggle("selected", active);
+        button.setAttribute("aria-checked", active && Number(button.dataset.rating) === rating ? "true" : "false");
+      });
+    }
+
+    function renderReviews() {
+      if (!storedReviews.length) return;
+      const average = storedReviews.reduce(function (sum, review) { return sum + review.rating; }, 0) / storedReviews.length;
+      document.getElementById("rating-number").textContent = average.toFixed(1);
+      document.getElementById("summary-stars").textContent = "★★★★★";
+      document.getElementById("summary-stars").setAttribute("aria-label", average.toFixed(1) + " de 5 estrellas");
+      document.getElementById("review-count").textContent = storedReviews.length + (storedReviews.length === 1 ? " reseña publicada" : " reseñas publicadas");
+      reviewList.innerHTML = storedReviews.slice().reverse().map(function (review) {
+        return '<article class="review-item"><div class="review-item-top"><strong>' + escapeHtml(review.name) + '</strong><time>' + escapeHtml(review.date) + '</time></div><div class="stars-display" aria-label="' + review.rating + ' de 5 estrellas">' + "★".repeat(review.rating) + "☆".repeat(5 - review.rating) + '</div><p>' + escapeHtml(review.comment) + '</p></article>';
+      }).join("");
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, function (character) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[character];
+      });
+    }
+
+    ratingButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        selectedRating = Number(button.dataset.rating);
+        paintStars(selectedRating);
+      });
+    });
+
+    document.getElementById("review-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!selectedRating) {
+        document.getElementById("star-picker").animate([{ transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "translateX(0)" }], { duration: 220 });
+        return;
+      }
+      storedReviews.push({
+        rating: selectedRating,
+        name: document.getElementById("review-name").value.trim(),
+        comment: document.getElementById("review-comment").value.trim(),
+        date: new Date().toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" })
+      });
+      try {
+        localStorage.setItem("beautyCareReviews", JSON.stringify(storedReviews));
+      } catch (error) {
+        // La reseña sigue visible durante esta sesión aunque el navegador bloquee el almacenamiento.
+      }
+      this.reset();
+      selectedRating = 0;
+      paintStars(0);
+      renderReviews();
+    });
+
+    renderReviews();
+
+    document.getElementById("order-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!this.checkValidity()) { this.reportValidity(); return; }
+      const customerFirstName = document.getElementById("first-name").value.trim();
+      const customerLastName = document.getElementById("last-name").value.trim();
+      const customerPhone = document.getElementById("phone").value.trim();
+      const customerEmail = document.getElementById("email").value.trim() || "No registrado";
+      const customerDepartment = document.getElementById("department").value;
+      const customerCity = document.getElementById("city").value.trim();
+      const customerAddress = document.getElementById("address").value.trim();
+      const customerNotes = document.getElementById("notes").value.trim() || "Sin notas";
+      const message = [
+        "Hola, quiero pedir el Masajeador Facial Beauty Care 5 en 1.",
+        "",
+        "Nombres: " + customerFirstName,
+        "Apellidos: " + customerLastName,
+        "Teléfono: " + customerPhone,
+        "Correo: " + customerEmail,
+        "Departamento: " + customerDepartment,
+        "Ciudad: " + customerCity,
+        "Dirección: " + customerAddress,
+        "Notas: " + customerNotes,
+        "Forma de pago: Contra entrega",
+        "Precio: $30.000"
+      ].join("\n");
+      const whatsappUrl = "https://wa.me/573132049102?text=" + encodeURIComponent(message);
+      window.open(whatsappUrl, "_blank", "noopener");
+      document.getElementById("order-card").classList.add("submitted");
+      document.getElementById("order-card").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  </script>
+</body>
+</html>
