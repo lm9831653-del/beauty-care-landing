@@ -217,7 +217,14 @@
     .review-item time { color: var(--muted); font-size: .68rem; }
     .review-item .stars-display { font-size: .78rem; letter-spacing: 1px; }
     .review-item p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .review-tag { display: inline-flex; width: fit-content; align-items: center; padding: 3px 7px; border-radius: 99px; color: #276346; background: #eaf8ef; font-size: .64rem; font-weight: 800; }
     .empty-reviews { padding: 15px 16px; border: 1px dashed #e7d9e2; border-radius: 14px; color: var(--muted); font-size: .8rem; }
+    .review-lock { display: grid; gap: 10px; padding: 16px; border: 1px dashed #e7d9e2; border-radius: 14px; color: var(--muted); background: var(--cream); font-size: .8rem; }
+    .review-lock strong { color: var(--ink); font-size: .86rem; }
+    .review-lock a { width: fit-content; color: var(--pink-dark); font-weight: 800; }
+    .review-feedback { min-height: 18px; margin: 10px 0 0; color: var(--pink-dark); font-size: .74rem; font-weight: 700; text-align: center; }
+    .review-more { width: 100%; margin-top: 14px; padding: 11px 14px; border: 1px solid #eadfe5; border-radius: 10px; color: var(--pink-dark); background: #fff; font-size: .78rem; font-weight: 800; }
+    .review-more:hover { border-color: var(--pink); background: var(--pink-soft); }
 
     .accessories { background: #fff; }
     .accessory-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
@@ -290,6 +297,14 @@
     .order-card-head { display: flex; justify-content: space-between; gap: 15px; align-items: start; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
     .order-card h3 { margin: 0; font-size: 1.05rem; }
     .order-card .card-price { color: var(--pink-dark); font-size: 1.45rem; font-weight: 900; white-space: nowrap; }
+    .order-confirmation { padding: 18px; border-radius: 15px; color: var(--ink); background: var(--pink-soft); }
+    .order-confirmation h4 { margin: 0 0 7px; font-size: .98rem; }
+    .order-confirmation p { margin: 0; color: var(--muted); font-size: .8rem; }
+    .order-summary { display: grid; gap: 5px; margin: 14px 0; padding: 12px; border-radius: 11px; background: #fff; font-size: .78rem; }
+    .order-summary strong { color: var(--ink); }
+    .confirmation-actions { display: grid; gap: 9px; margin-top: 16px; }
+    .confirmation-actions .btn-primary { margin-top: 0; }
+    .link-button { border: 0; padding: 0; color: var(--pink-dark); background: transparent; font-size: .76rem; font-weight: 800; }
     .field { margin-top: 16px; }
     label { display: block; margin-bottom: 6px; color: var(--ink); font-size: .76rem; font-weight: 800; }
     input, select { width: 100%; padding: 12px 13px; border: 1px solid #e5dfe4; border-radius: 10px; outline: none; color: var(--ink); background: #fff; font-size: .87rem; }
@@ -570,7 +585,7 @@
               </div>
               <div class="form-row">
                 <div class="field"><label for="phone">Número de teléfono</label><input id="phone" name="phone" type="tel" placeholder="300 000 0000" autocomplete="tel" required></div>
-                <div class="field"><label for="email">Correo electrónico <span class="optional">(opcional)</span></label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email"></div>
+                <div class="field"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required></div>
               </div>
               <div class="form-row">
                 <div class="field"><label for="department">Departamento</label><select id="department" name="department" autocomplete="address-level1" required>
@@ -592,7 +607,17 @@
               <p class="form-foot">Pago contra entrega disponible · Te contactaremos para confirmar disponibilidad y envío.</p>
             </form>
           </div>
-          <div class="success" role="status">✓ ¡Solicitud recibida! Te contactaremos pronto para confirmar los datos de tu envío.</div>
+          <div class="order-confirmation" id="order-confirmation" hidden>
+            <h4>Confirma tus datos antes de continuar</h4>
+            <p>Revisa la información y confirma el pedido. Al continuar, la solicitud se guarda en este navegador y se prepara un mensaje para WhatsApp. Esto no confirma una compra ni un pago.</p>
+            <div class="order-summary" id="order-summary"></div>
+            <div class="confirmation-actions">
+              <button class="btn-primary" id="confirm-order" type="button">Registrar solicitud y abrir WhatsApp <span aria-hidden="true">→</span></button>
+              <button class="link-button" id="edit-order" type="button">Editar mis datos</button>
+            </div>
+            <p class="form-foot">Esta landing guarda la solicitud solo en este navegador. No verifica la compra ni el correo.</p>
+          </div>
+          <div class="success" id="order-success" role="status"></div>
         </div>
       </div>
     </section>
@@ -600,9 +625,9 @@
     <section class="reviews" id="resenas">
       <div class="container reviews-grid">
         <div class="reviews-intro">
-          <span class="eyebrow">Opiniones reales</span>
+          <span class="eyebrow">Opiniones de clientes</span>
           <h2>Tu experiencia también cuenta.</h2>
-          <p>Después de probarlo, comparte qué te pareció el masajeador y ayuda a otras personas a elegir con confianza.</p>
+          <p>Las opiniones nuevas se guardan en este navegador. El correo debe coincidir con el de una solicitud registrada aquí; esto no verifica la compra ni la identidad.</p>
           <div class="rating-summary" id="rating-summary">
             <span class="rating-number" id="rating-number">—</span>
             <div><div class="stars-display" id="summary-stars" aria-label="Sin calificaciones">☆☆☆☆☆</div><strong id="review-count">Sé la primera persona en opinar</strong><small>Las reseñas aparecerán aquí.</small></div>
@@ -611,7 +636,12 @@
         <div class="review-card">
           <h3>Déjanos tu reseña</h3>
           <p>Elige una calificación y cuéntanos brevemente tu experiencia.</p>
-          <form id="review-form">
+          <div class="review-lock" id="review-lock">
+            <strong>La reseña se desbloquea después de registrar una solicitud.</strong>
+            <span>Completa tus datos, registra la solicitud y usa el mismo correo para publicar una opinión. La solicitud no equivale a una compra confirmada.</span>
+            <a href="#pedido">Ir al formulario de pedido →</a>
+          </div>
+          <form id="review-form" hidden>
             <label>Tu calificación</label>
             <div class="star-picker" id="star-picker" role="radiogroup" aria-label="Selecciona una calificación de una a cinco estrellas">
               <button class="star-button" type="button" data-rating="1" role="radio" aria-label="1 estrella">★</button>
@@ -621,11 +651,14 @@
               <button class="star-button" type="button" data-rating="5" role="radio" aria-label="5 estrellas">★</button>
             </div>
             <div class="field"><label for="review-name">Nombre</label><input id="review-name" type="text" placeholder="Tu nombre" maxlength="40" required></div>
+            <div class="field"><label for="review-email">Correo electrónico</label><input id="review-email" type="email" placeholder="El correo usado en tu pedido" autocomplete="email" required></div>
             <div class="field"><label for="review-comment">Comentario</label><textarea id="review-comment" placeholder="¿Qué te pareció?" maxlength="280" required></textarea></div>
             <button class="btn-primary submit" type="submit">Publicar reseña <span aria-hidden="true">→</span></button>
-            <p class="form-foot">Las reseñas de esta demo se guardan en el navegador.</p>
+            <p class="form-foot">Un mismo correo puede registrar varios pedidos, pero solo publicar una reseña. Los comentarios con lenguaje ofensivo no se publican.</p>
+            <p class="review-feedback" id="review-feedback" role="status"></p>
           </form>
           <div class="review-list" id="review-list" aria-live="polite"><div class="empty-reviews">Todavía no hay reseñas publicadas.</div></div>
+          <button class="review-more" id="review-more" type="button" hidden>Ver más opiniones</button>
         </div>
       </div>
     </section>
@@ -747,15 +780,96 @@
       updateCarousel();
     }
 
-    let selectedRating = 0;
+    const storageKeys = {
+      reviews: "beautyCareReviews",
+      orders: "beautyCareConfirmedOrders"
+    };
+    function readStorage(key, fallback) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || "null");
+        return value === null ? fallback : value;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function writeStorage(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        // La experiencia sigue disponible durante esta sesión si el navegador bloquea el almacenamiento.
+      }
+    }
+
+    let storedReviews = readStorage(storageKeys.reviews, []);
+    if (!Array.isArray(storedReviews)) storedReviews = [];
+    storedReviews = storedReviews.filter(function (review) { return review && !review.sample; });
+    let confirmedOrders = readStorage(storageKeys.orders, []);
+    if (!Array.isArray(confirmedOrders)) confirmedOrders = [];
+
     const ratingButtons = document.querySelectorAll(".star-button");
     const reviewList = document.getElementById("review-list");
-    let storedReviews = [];
-    try {
-      const savedReviews = JSON.parse(localStorage.getItem("beautyCareReviews") || "[]");
-      storedReviews = Array.isArray(savedReviews) ? savedReviews : [];
-    } catch (error) {
-      storedReviews = [];
+    const reviewForm = document.getElementById("review-form");
+    const reviewLock = document.getElementById("review-lock");
+    const reviewEmail = document.getElementById("review-email");
+    const reviewFeedback = document.getElementById("review-feedback");
+    const reviewMore = document.getElementById("review-more");
+    let selectedRating = 0;
+    let reviewVisibleCount = 8;
+    const blockedWords = [
+      "puta", "puto", "mierda", "marica", "maricon", "gonorrea", "verga",
+      "malparido", "carechimba", "hijueputa", "hijodeputa", "fuck", "shit", "bitch"
+    ];
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value).replace(/[&<>"']/g, function (character) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[character];
+      });
+    }
+
+    function validReviews() {
+      return storedReviews.filter(function (review) {
+        const rating = Number(review && review.rating);
+        return review && Number.isInteger(rating) && rating >= 1 && rating <= 5 && typeof review.name === "string" && typeof review.comment === "string";
+      }).map(function (review) {
+        return Object.assign({}, review, { rating: Number(review.rating) });
+      });
+    }
+
+    function containsBlockedLanguage(value) {
+      const normalized = String(value == null ? "" : value)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      return blockedWords.some(function (word) {
+        const pattern = word.split("").join("[^a-z0-9]*");
+        return new RegExp("(^|[^a-z0-9])" + pattern + "($|[^a-z0-9])").test(normalized);
+      });
+    }
+
+    function renderReviews() {
+      storedReviews = validReviews();
+      if (!storedReviews.length) {
+        document.getElementById("rating-number").textContent = "—";
+        document.getElementById("summary-stars").textContent = "☆☆☆☆☆";
+        document.getElementById("review-count").textContent = "Sé la primera persona en opinar";
+        reviewList.innerHTML = '<div class="empty-reviews">Todavía no hay reseñas publicadas.</div>';
+        return;
+      }
+      const average = storedReviews.reduce(function (sum, review) { return sum + review.rating; }, 0) / storedReviews.length;
+      document.getElementById("rating-number").textContent = average.toFixed(1);
+      document.getElementById("summary-stars").textContent = "★★★★★";
+      document.getElementById("summary-stars").setAttribute("aria-label", average.toFixed(1) + " de 5 estrellas");
+      document.getElementById("review-count").textContent = storedReviews.length + (storedReviews.length === 1 ? " opinión publicada" : " opiniones publicadas");
+      const visibleReviews = storedReviews.slice().reverse().slice(0, reviewVisibleCount);
+      reviewList.innerHTML = visibleReviews.map(function (review) {
+        const tag = '<span class="review-tag">Opinión publicada</span>';
+        return '<article class="review-item"><div class="review-item-top"><div><strong>' + escapeHtml(review.name) + '</strong><br>' + tag + '</div><time>' + escapeHtml(review.date) + '</time></div><div class="stars-display" aria-label="' + review.rating + ' de 5 estrellas">' + "★".repeat(review.rating) + "☆".repeat(5 - review.rating) + '</div><p>' + escapeHtml(review.comment) + '</p></article>';
+      }).join("");
+      const remainingReviews = storedReviews.length - visibleReviews.length;
+      reviewMore.hidden = remainingReviews <= 0;
+      reviewMore.textContent = remainingReviews > 0 ? "Ver más opiniones (" + remainingReviews + ")" : "Ver más opiniones";
+      writeStorage(storageKeys.reviews, storedReviews);
     }
 
     function paintStars(rating) {
@@ -766,22 +880,17 @@
       });
     }
 
-    function renderReviews() {
-      if (!storedReviews.length) return;
-      const average = storedReviews.reduce(function (sum, review) { return sum + review.rating; }, 0) / storedReviews.length;
-      document.getElementById("rating-number").textContent = average.toFixed(1);
-      document.getElementById("summary-stars").textContent = "★★★★★";
-      document.getElementById("summary-stars").setAttribute("aria-label", average.toFixed(1) + " de 5 estrellas");
-      document.getElementById("review-count").textContent = storedReviews.length + (storedReviews.length === 1 ? " reseña publicada" : " reseñas publicadas");
-      reviewList.innerHTML = storedReviews.slice().reverse().map(function (review) {
-        return '<article class="review-item"><div class="review-item-top"><strong>' + escapeHtml(review.name) + '</strong><time>' + escapeHtml(review.date) + '</time></div><div class="stars-display" aria-label="' + review.rating + ' de 5 estrellas">' + "★".repeat(review.rating) + "☆".repeat(5 - review.rating) + '</div><p>' + escapeHtml(review.comment) + '</p></article>';
-      }).join("");
+    function hasLocalOrder(email) {
+      const normalizedEmail = email.trim().toLowerCase();
+      return confirmedOrders.some(function (order) {
+        return order && order.status === "requested" && String(order.email || "").toLowerCase() === normalizedEmail;
+      });
     }
 
-    function escapeHtml(value) {
-      return value.replace(/[&<>"']/g, function (character) {
-        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[character];
-      });
+    function updateReviewAccess() {
+      const hasOrder = confirmedOrders.some(function (order) { return order && order.status === "requested"; });
+      reviewLock.hidden = hasOrder;
+      reviewForm.hidden = !hasOrder;
     }
 
     ratingButtons.forEach(function (button) {
@@ -791,60 +900,130 @@
       });
     });
 
-    document.getElementById("review-form").addEventListener("submit", function (event) {
+    reviewForm.addEventListener("submit", function (event) {
       event.preventDefault();
+      reviewFeedback.textContent = "";
       if (!selectedRating) {
         document.getElementById("star-picker").animate([{ transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "translateX(0)" }], { duration: 220 });
+        reviewFeedback.textContent = "Selecciona una calificación de una a cinco estrellas.";
+        return;
+      }
+      if (!this.checkValidity()) { this.reportValidity(); return; }
+      const email = reviewEmail.value.trim().toLowerCase();
+      if (!hasLocalOrder(email)) {
+        reviewFeedback.textContent = "Ese correo no tiene una solicitud registrada en este navegador.";
+        return;
+      }
+      const reviewName = document.getElementById("review-name").value.trim();
+      const reviewComment = document.getElementById("review-comment").value.trim();
+      if (containsBlockedLanguage(reviewName) || containsBlockedLanguage(reviewComment)) {
+        reviewFeedback.textContent = "No se puede publicar lenguaje ofensivo. Escribe tu opinión con respeto.";
+        return;
+      }
+      if (storedReviews.some(function (review) { return review.email && review.email.toLowerCase() === email; })) {
+        reviewFeedback.textContent = "Este correo ya publicó una opinión.";
         return;
       }
       storedReviews.push({
         rating: selectedRating,
-        name: document.getElementById("review-name").value.trim(),
-        comment: document.getElementById("review-comment").value.trim(),
-        date: new Date().toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" })
+        name: reviewName,
+        email: email,
+        comment: reviewComment,
+        date: new Date().toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" }),
+        sample: false
       });
-      try {
-        localStorage.setItem("beautyCareReviews", JSON.stringify(storedReviews));
-      } catch (error) {
-        // La reseña sigue visible durante esta sesión aunque el navegador bloquee el almacenamiento.
-      }
+      writeStorage(storageKeys.reviews, storedReviews);
       this.reset();
       selectedRating = 0;
       paintStars(0);
+      reviewFeedback.textContent = "Tu opinión quedó guardada en este navegador.";
+      renderReviews();
+    });
+
+    reviewMore.addEventListener("click", function () {
+      reviewVisibleCount += 8;
       renderReviews();
     });
 
     renderReviews();
+    updateReviewAccess();
 
-    document.getElementById("order-form").addEventListener("submit", function (event) {
-      event.preventDefault();
-      if (!this.checkValidity()) { this.reportValidity(); return; }
-      const customerFirstName = document.getElementById("first-name").value.trim();
-      const customerLastName = document.getElementById("last-name").value.trim();
-      const customerPhone = document.getElementById("phone").value.trim();
-      const customerEmail = document.getElementById("email").value.trim() || "No registrado";
-      const customerDepartment = document.getElementById("department").value;
-      const customerCity = document.getElementById("city").value.trim();
-      const customerAddress = document.getElementById("address").value.trim();
-      const customerNotes = document.getElementById("notes").value.trim() || "Sin notas";
-      const message = [
+    const orderForm = document.getElementById("order-form");
+    const orderConfirmation = document.getElementById("order-confirmation");
+    const orderSummary = document.getElementById("order-summary");
+    let pendingOrder = null;
+
+    function makeOrderReference() {
+      return "BC-" + Date.now().toString(36).toUpperCase().slice(-6);
+    }
+
+    function collectOrder() {
+      return {
+        firstName: document.getElementById("first-name").value.trim(),
+        lastName: document.getElementById("last-name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim().toLowerCase(),
+        department: document.getElementById("department").value,
+        city: document.getElementById("city").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        notes: document.getElementById("notes").value.trim() || "Sin notas"
+      };
+    }
+
+    function buildWhatsAppMessage(order) {
+      return [
         "Hola, quiero pedir el Masajeador Facial Beauty Care 5 en 1.",
         "",
-        "Nombres: " + customerFirstName,
-        "Apellidos: " + customerLastName,
-        "Teléfono: " + customerPhone,
-        "Correo: " + customerEmail,
-        "Departamento: " + customerDepartment,
-        "Ciudad: " + customerCity,
-        "Dirección: " + customerAddress,
-        "Notas: " + customerNotes,
+        "Referencia: " + order.id,
+        "Nombres: " + order.firstName,
+        "Apellidos: " + order.lastName,
+        "Teléfono: " + order.phone,
+        "Correo: " + order.email,
+        "Departamento: " + order.department,
+        "Ciudad: " + order.city,
+        "Dirección: " + order.address,
+        "Notas: " + order.notes,
         "Forma de pago: Contra entrega",
         "Precio: $30.000"
       ].join("\n");
-      const whatsappUrl = "https://wa.me/573132049102?text=" + encodeURIComponent(message);
-      window.open(whatsappUrl, "_blank", "noopener");
-      document.getElementById("order-card").classList.add("submitted");
-      document.getElementById("order-card").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    orderForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!this.checkValidity()) { this.reportValidity(); return; }
+      pendingOrder = Object.assign({}, collectOrder(), { id: makeOrderReference() });
+      orderSummary.innerHTML = [
+        "<strong>" + escapeHtml(pendingOrder.firstName + " " + pendingOrder.lastName) + "</strong>",
+        escapeHtml(pendingOrder.email) + " · " + escapeHtml(pendingOrder.phone),
+        escapeHtml(pendingOrder.address) + ", " + escapeHtml(pendingOrder.city) + ", " + escapeHtml(pendingOrder.department),
+        "Producto: Masajeador Facial Beauty Care 5 en 1 · $30.000 · Pago contra entrega"
+      ].map(function (line) { return "<div>" + line + "</div>"; }).join("");
+      orderForm.hidden = true;
+      orderConfirmation.hidden = false;
+      orderConfirmation.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    document.getElementById("edit-order").addEventListener("click", function () {
+      orderConfirmation.hidden = true;
+      orderForm.hidden = false;
+    });
+
+    document.getElementById("confirm-order").addEventListener("click", function () {
+      if (!pendingOrder) return;
+      const order = Object.assign({}, pendingOrder, {
+        status: "requested",
+        requestedAt: new Date().toISOString()
+      });
+      confirmedOrders.push(order);
+      writeStorage(storageKeys.orders, confirmedOrders);
+      updateReviewAccess();
+      const whatsappUrl = "https://wa.me/573132049102?text=" + encodeURIComponent(buildWhatsAppMessage(order));
+      const whatsappWindow = window.open(whatsappUrl, "_blank", "noopener");
+      if (!whatsappWindow) window.location.href = whatsappUrl;
+      document.getElementById("order-success").textContent = "Solicitud registrada en este navegador. Envía el mensaje desde WhatsApp para contactar a la tienda.";
+      orderConfirmation.hidden = true;
+      document.getElementById("order-success").scrollIntoView({ behavior: "smooth", block: "center" });
+      pendingOrder = null;
     });
   </script>
 </body>

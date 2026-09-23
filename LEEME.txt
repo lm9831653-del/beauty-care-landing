@@ -8,9 +8,18 @@ La landing es estática y funciona sin instalar nada. Incluye:
 - Carrusel responsive con flechas, indicadores y desplazamiento táctil.
 - Ficha técnica, preguntas frecuentes y sección de reseñas.
 - Galería visual de los 5 accesorios.
-- Formulario de solicitud que abre WhatsApp con los datos del pedido listos para enviar.
-- Reseñas guardadas en el almacenamiento del navegador.
+- Formulario de pedido que abre WhatsApp directamente después de validar los datos.
+- Nuevos pedidos y reseñas guardados en el almacenamiento del navegador.
+- Reseñas desbloqueadas para el correo usado en una solicitud guardada en ese navegador (sin verificación de compra).
+- El mismo correo puede registrar varias solicitudes, pero solo publicar una reseña.
+- Filtro interno que evita publicar lenguaje ofensivo en nuevas opiniones.
 
 Nota:
-Las reseñas se guardan en el navegador donde se publican; no se sincronizan entre
-dispositivos. El formulario de pedido abre WhatsApp en el número configurado.
+Esta versión es una demo estática: las solicitudes y las reseñas se
+guardan en el navegador donde se usan; no se sincronizan entre dispositivos.
+El registro local no sustituye una verificación real de compra o correo.
+Para eso se necesita un backend con base de datos y un proveedor de correo.
+El formulario abre WhatsApp en el número configurado.
+Las opiniones las escriben usuarios de cada navegador; la página no verifica su identidad.
+El formulario guarda una solicitud local y abre WhatsApp con el mensaje preparado;
+esto no confirma una compra. El cliente debe pulsar "Enviar" en WhatsApp.
