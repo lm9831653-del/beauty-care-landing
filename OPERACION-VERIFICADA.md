@@ -16,7 +16,7 @@ El total público cuenta solo pedidos marcados como `delivered` en esta base de 
 2. Crea una cuenta de Resend, verifica un dominio remitente y autoriza el remitente que usarán los correos de invitación. Sin un remitente verificado Resend no enviará correos a los compradores.
 3. En el proyecto de Vercel, entra en **Settings → Environment Variables** y configura para Production (y Preview si lo necesitas):
    - `SUPABASE_URL`: URL del proyecto Supabase.
-   - `SUPABASE_SERVICE_ROLE_KEY`: clave `service_role` del proyecto. Es secreta; no la publiques en GitHub, en el HTML ni en el navegador.
+   - `SUPABASE_SERVICE_ROLE_KEY`: clave secreta del proyecto (`sb_secret_...`, o la legacy `service_role`). Es secreta; no la publiques en GitHub, en el HTML ni en el navegador.
    - `RESEND_API_KEY`: clave secreta de Resend.
    - `REVIEW_FROM_EMAIL`: remitente verificado, por ejemplo `Beauty Care <pedidos@tu-dominio-verificado.com>`.
    - `ADMIN_TOKEN`: clave aleatoria larga, solo para entrar a la página privada de pedidos.
