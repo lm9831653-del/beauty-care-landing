@@ -303,7 +303,6 @@
     footer { padding: 26px 0 32px; color: var(--muted); background: #fff; font-size: .76rem; }
     .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
     .footer-inner strong { color: var(--ink); }
-    .mobile-buy { display: none; }
 
     @media (max-width: 1024px) {
       .nav-toggle { display: grid; margin-left: auto; }
@@ -380,9 +379,6 @@
       .order-card { padding: 22px 17px; }
       .form-row { grid-template-columns: 1fr; }
       .footer-inner { flex-direction: column; text-align: center; }
-      .mobile-buy { position: fixed; z-index: 5; right: 12px; bottom: 12px; left: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 10px 10px 15px; border: 1px solid rgba(255,255,255,.6); border-radius: 16px; color: #fff; background: rgba(38, 31, 37, .92); box-shadow: 0 10px 35px rgba(0,0,0,.2); backdrop-filter: blur(12px); }
-      .mobile-buy span { font-size: .78rem; font-weight: 800; }
-      .mobile-buy a { padding: 10px 14px; border-radius: 10px; color: #fff; background: var(--pink); font-size: .78rem; font-weight: 900; }
     }
   </style>
 </head>
@@ -634,7 +630,6 @@
   <footer>
     <div class="container footer-inner"><span><strong>beautycare</strong> · Cuidado simple para sentirte bien.</span><span>Envíos a todo Colombia · Compra segura</span></div>
   </footer>
-  <div class="mobile-buy"><span>Tu rutina empieza aquí</span><a href="#pedido">Pedir ahora</a></div>
 
   <script>
     const navigation = document.getElementById("main-navigation");
