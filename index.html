@@ -73,44 +73,6 @@
     .brand-name span { color: var(--pink); }
     .nav-links { display: flex; align-items: center; gap: 26px; color: var(--muted); font-size: .9rem; font-weight: 700; }
     .nav-links a:hover { color: var(--pink-dark); }
-    .nav-toggle {
-      display: none;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      color: var(--ink);
-      background: #fff;
-    }
-    .nav-toggle:focus-visible {
-      outline: 3px solid rgba(233, 78, 145, .25);
-      outline-offset: 2px;
-    }
-    .nav-toggle-icon,
-    .nav-toggle-icon::before,
-    .nav-toggle-icon::after {
-      width: 18px;
-      height: 2px;
-      border-radius: 9px;
-      background: currentColor;
-      transition: transform .2s ease, opacity .2s ease;
-    }
-    .nav-toggle-icon {
-      position: relative;
-      display: block;
-    }
-    .nav-toggle-icon::before,
-    .nav-toggle-icon::after {
-      content: "";
-      position: absolute;
-      left: 0;
-    }
-    .nav-toggle-icon::before { top: -6px; }
-    .nav-toggle-icon::after { top: 6px; }
-    .nav-toggle[aria-expanded="true"] .nav-toggle-icon { background: transparent; }
-    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before { transform: translateY(6px) rotate(45deg); }
-    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after { transform: translateY(-6px) rotate(-45deg); }
     .nav-cta, .btn-primary {
       border: 0;
       color: #fff;
@@ -337,27 +299,22 @@
     @media (max-width: 600px) {
       .container { width: min(100% - 28px, 1140px); }
       .topbar { font-size: .68rem; }
-      .nav { min-height: 62px; }
-      .nav { gap: 8px; }
-      .nav-toggle { display: grid; place-items: center; margin-left: auto; }
+      .nav { min-height: 62px; gap: 8px; flex-wrap: wrap; }
       .nav-links {
-        position: absolute;
-        z-index: 3;
-        top: calc(100% + 10px);
-        right: 0;
-        left: 0;
-        display: none;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 3px;
-        padding: 10px;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, .98);
-        box-shadow: var(--shadow);
+        position: static;
+        order: 3;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 9px 0 11px;
+        border-top: 1px solid var(--line);
+        scrollbar-width: none;
       }
-      .nav-links.is-open { display: flex; }
-      .nav-links a { padding: 12px 14px; border-radius: 10px; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links a { flex: 0 0 auto; padding: 9px 12px; border-radius: 999px; background: var(--pink-soft); color: var(--pink-dark); white-space: nowrap; }
       .nav-links a:hover { color: var(--pink-dark); background: var(--pink-soft); }
       .nav-cta { padding: 9px 13px; font-size: .76rem; }
       .hero { padding: 42px 0 58px; }
@@ -408,9 +365,6 @@
         <a href="#accesorios">Galería</a>
         <a href="#pedido">Cómo pedir</a>
       </nav>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="main-navigation" aria-expanded="false" aria-label="Abrir menú">
-        <span class="nav-toggle-icon" aria-hidden="true"></span>
-      </button>
       <a class="nav-cta" href="#pedido">Comprar ahora</a>
     </div>
   </header>
@@ -643,43 +597,6 @@
   <div class="mobile-buy"><span>Tu rutina empieza aquí</span><a href="#pedido">Pedir ahora</a></div>
 
   <script>
-    const navigation = document.getElementById("main-navigation");
-    const navigationToggle = document.getElementById("nav-toggle");
-    const navigationContainer = document.querySelector(".nav");
-
-    if (navigation && navigationToggle && navigationContainer) {
-      function setNavigationOpen(isOpen) {
-        navigation.classList.toggle("is-open", isOpen);
-        navigationToggle.setAttribute("aria-expanded", String(isOpen));
-        navigationToggle.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
-      }
-
-      navigationToggle.addEventListener("click", function () {
-        setNavigationOpen(navigationToggle.getAttribute("aria-expanded") !== "true");
-      });
-
-      navigation.querySelectorAll("a").forEach(function (link) {
-        link.addEventListener("click", function () {
-          setNavigationOpen(false);
-        });
-      });
-
-      document.addEventListener("click", function (event) {
-        if (!navigationContainer.contains(event.target)) setNavigationOpen(false);
-      });
-
-      document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") {
-          setNavigationOpen(false);
-          navigationToggle.focus();
-        }
-      });
-
-      window.addEventListener("resize", function () {
-        if (window.innerWidth > 600) setNavigationOpen(false);
-      });
-    }
-
     const carousel = document.getElementById("product-gallery");
     if (carousel) {
       const carouselTrack = carousel.querySelector(".carousel-track");
